@@ -9,7 +9,8 @@ class Good(models.Model):
     detail = models.TextField(verbose_name='商品详情', null=True, blank=True)
     created = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
     updated = models.DateTimeField(verbose_name='修改时间', auto_now=True)
-    category_id = models.ForeignKey('goods.Category', verbose_name='商品分类', on_delete=models.CASCADE)
+    category_id = models.ForeignKey('goods.Category', verbose_name='商品分类', on_delete=models.CASCADE,
+                                    related_name='category')
 
     class Meta:
         verbose_name = '商品表'
@@ -23,7 +24,7 @@ class GoodImage(models.Model):
     image = models.ImageField(verbose_name='图片', upload_to='goods/good-image/%Y/%m/%d')
     created = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
     updated = models.DateTimeField(verbose_name='修改时间', auto_now=True)
-    good_id = models.ForeignKey('goods.Good', verbose_name='商品', on_delete=models.CASCADE)
+    good_id = models.ForeignKey('goods.Good', verbose_name='商品', on_delete=models.CASCADE, related_name='good')
 
     class Meta:
         verbose_name = '商品图片表'
@@ -35,7 +36,8 @@ class Category(models.Model):
     created = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
     updated = models.DateTimeField(verbose_name='修改时间', auto_now=True)
     slug = models.CharField(max_length=120, null=True, blank=True)
-    parent_id = models.ForeignKey('goods.Category', verbose_name='父级分类', on_delete=models.CASCADE)
+    parent_id = models.ForeignKey('goods.Category', verbose_name='父级分类', on_delete=models.CASCADE,
+                                  related_name='parent_category', null=True, blank=True)
 
     class Meta:
         verbose_name = '商品分类表'

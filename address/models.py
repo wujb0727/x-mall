@@ -9,3 +9,10 @@ class Address(models.Model):
     updated = models.DateTimeField(verbose_name='修改时间', auto_now=True)
     user_id = models.ForeignKey('account.User', verbose_name='用户', on_delete=models.CASCADE)
     is_default = models.BooleanField(verbose_name='是否为默认地址', default=False)
+
+    class Meta:
+        verbose_name = '地址表'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
