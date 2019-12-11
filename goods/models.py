@@ -4,7 +4,7 @@ from django.db import models
 class Good(models.Model):
     salePrice = models.DecimalField(verbose_name='销售价格', max_digits=10, decimal_places=2)
     productName = models.CharField(verbose_name='产品名称', max_length=50)
-    subTitle = models.CharField(verbose_name='字幕', max_length=200, null=True, blank=True)
+    subTitle = models.CharField(verbose_name='副标题', max_length=200, null=True, blank=True)
     productImageBig = models.ImageField(verbose_name='商品图片', upload_to='goods/good/%Y/%m/%d')
     detail = models.TextField(verbose_name='商品详情', null=True, blank=True)
     created = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
@@ -15,6 +15,7 @@ class Good(models.Model):
     class Meta:
         verbose_name = '商品表'
         verbose_name_plural = verbose_name
+        # ordering = ('-created',)
 
     def __str__(self):
         return self.productName
