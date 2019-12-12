@@ -16,7 +16,7 @@ class Good(models.Model):
     class Meta:
         verbose_name = '商品表'
         verbose_name_plural = verbose_name
-        # ordering = ('-created',)
+        ordering = ('-created',)
 
     def __str__(self):
         return self.productName

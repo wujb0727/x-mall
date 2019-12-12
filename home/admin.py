@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from home.models import NavList
+
+
+@admin.register(NavList)
+class NavListAdmin(admin.ModelAdmin):
+    pass
