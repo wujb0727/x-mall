@@ -23,6 +23,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('api/user/', include(('account.urls', 'account'), namespace='accounts')),
     path('api/goods/', include(('goods.urls', 'goods'), namespace='goods')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),  # 后台富文本编辑器上传图片
 ]
 
 if settings.DEBUG:

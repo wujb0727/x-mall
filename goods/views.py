@@ -4,7 +4,7 @@ from rest_framework import generics
 from goods.filters import GoodsFilter
 from goods.models import Good
 from goods.paginations import GoodPageNumberPagination
-from goods.serializers import GoodSerializer
+from goods.serializers import GoodSerializer, GoodDetailSerializer
 
 
 class GoodListView(generics.ListAPIView):
@@ -31,4 +31,4 @@ class GoodDetailView(generics.RetrieveUpdateDestroyAPIView):
     商品详情
     """
     queryset = Good.objects.all()
-    serializer_class = GoodSerializer
+    serializer_class = GoodDetailSerializer

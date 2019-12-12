@@ -44,8 +44,10 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
 
     'rest_framework',
-    'corsheaders',
-    'django_filters',
+    'corsheaders',  # 注册跨域app
+    'django_filters',  # 注册过滤器app
+    'ckeditor',  # 后台富文本编辑器
+    'ckeditor_uploader',
 ]
 
 MIDDLEWARE = [
@@ -135,12 +137,14 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+CKEDITOR_UPLOAD_PATH = 'upload/'
+
 AUTH_USER_MODEL = 'account.User'
 
 # 跨域问题配置
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
-# 允许所有的请求头
+# 允许的请求头
 CORS_ALLOW_HEADERS = ('http://127.0.0.1:9999',)
 
 CORS_ALLOW_METHODS = (

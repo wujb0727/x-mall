@@ -1,3 +1,4 @@
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 
 
@@ -6,11 +7,11 @@ class Good(models.Model):
     productName = models.CharField(verbose_name='产品名称', max_length=50)
     subTitle = models.CharField(verbose_name='副标题', max_length=200, null=True, blank=True)
     productImageBig = models.ImageField(verbose_name='商品图片', upload_to='goods/good/%Y/%m/%d')
-    detail = models.TextField(verbose_name='商品详情', null=True, blank=True)
+    # detail = models.TextField(verbose_name='商品详情', null=True, blank=True)
+    detail = RichTextUploadingField(verbose_name='商品详情', null=True, blank=True)
     created = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
     updated = models.DateTimeField(verbose_name='修改时间', auto_now=True)
-    category_id = models.ForeignKey('goods.Category', verbose_name='商品分类', on_delete=models.CASCADE,
-                                    related_name='category')
+    category = models.ForeignKey('goods.Category', verbose_name='商品分类', on_delete=models.CASCADE, related_name='goods')
 
     class Meta:
         verbose_name = '商品表'
@@ -22,14 +23,19 @@ class Good(models.Model):
 
 
 class GoodImage(models.Model):
-    image = models.ImageField(verbose_name='图片', upload_to='goods/good-image/%Y/%m/%d')
+    # image = models.ImageField(verbose_name='图片', upload_to='goods/good-image/%Y/%m/%d')
+    image = RichTextUploadingField(verbose_name='图片')
+    index = models.PositiveIntegerField(verbose_name='编号', default=1)
     created = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
     updated = models.DateTimeField(verbose_name='修改时间', auto_now=True)
-    good_id = models.ForeignKey('goods.Good', verbose_name='商品', on_delete=models.CASCADE, related_name='good')
+    good = models.ForeignKey('goods.Good', verbose_name='商品', on_delete=models.CASCADE, related_name='image')
 
     class Meta:
         verbose_name = '商品图片表'
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.good.productName
 
 
 class Category(models.Model):
@@ -38,7 +44,7 @@ class Category(models.Model):
     updated = models.DateTimeField(verbose_name='修改时间', auto_now=True)
     slug = models.CharField(max_length=120, null=True, blank=True)
     parent_id = models.ForeignKey('goods.Category', verbose_name='父级分类', on_delete=models.CASCADE,
-                                  related_name='parent_category', null=True, blank=True)
+                                  related_name='category', null=True, blank=True)
 
     class Meta:
         verbose_name = '商品分类表'
