@@ -7,7 +7,7 @@ class User(AbstractUser):
     image = models.ImageField(verbose_name='图片', upload_to='account/avatar/%Y/%m/%d', blank=True)
 
     class Meta:
-        verbose_name = '用户表'
+        verbose_name = '用户'
         verbose_name_plural = verbose_name
 
     def __str__(self):

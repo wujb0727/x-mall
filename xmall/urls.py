@@ -17,14 +17,19 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/api-token-auth/', obtain_auth_token),  # DRF   token认证
+    path('api/jwt-auth/', obtain_jwt_token, name='jwt-token'),
     path('ckeditor/', include('ckeditor_uploader.urls')),  # 后台富文本编辑器上传图片
     path('api-auth/', include('rest_framework.urls')),
     path('api/user/', include(('account.urls', 'account'), namespace='accounts')),
     path('api/goods/', include(('goods.urls', 'goods'), namespace='goods')),
-    path('api/navList/', include(('home.urls', 'home'), namespace='home'))
+    path('api/home/', include(('home.urls', 'home'), namespace='home')),
+    path('api/address/', include(('address.urls', 'address'), namespace='address'))
 ]
 
 if settings.DEBUG:

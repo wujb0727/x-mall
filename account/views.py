@@ -1,32 +1,68 @@
-from django.shortcuts import render
-from rest_framework import generics
+from django.shortcuts import redirect
+from django.urls import reverse
+
+from rest_framework import generics, status
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
+from rest_framework_jwt.serializers import jwt_payload_handler, jwt_encode_handler
 
 from account.models import User
-from account.serializers import UserSerializer, NewUserSerializer
+from account.serializers import UserSerializer, NewUserSerializer, UserAvatarSerializer
 
 
-class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+# class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+#     lookup_field = 'username'
+#     lookup_url_kwarg = 'username'
+#
+#     # def get(self, request, *args, **kwargs):
+#     #     return self.retrieve(request, *args, **kwargs)
+#     #
+#     # def put(self, request, *args, **kwargs):
+#     #     return self.update(request, *args, **kwargs)
+#     #
+#     # def patch(self, request, *args, **kwargs):
+#     #     return self.partial_update(request, *args, **kwargs)
+#     #
+#     # def delete(self, request, *args, **kwargs):
+#     #     return self.delete(request, *args, **kwargs)
+#
+#
+# class UserList(generics.ListCreateAPIView):
+#     queryset = User.objects.all()
+#
+#     def get_serializer_class(self):
+#         if self.request.method == 'GET':
+#             return UserSerializer
+#         elif self.request.method == 'POST':
+#             return NewUserSerializer
+#         return super().get_serializer_class()
+
+
+class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     lookup_field = 'username'
     lookup_url_kwarg = 'username'
 
-    # def get(self, request, *args, **kwargs):
-    #     return self.retrieve(request, *args, **kwargs)
-    #
-    # def put(self, request, *args, **kwargs):
-    #     return self.update(request, *args, **kwargs)
-    #
-    # def patch(self, request, *args, **kwargs):
-    #     return self.partial_update(request, *args, **kwargs)
-    #
-    # def delete(self, request, *args, **kwargs):
-    #     return self.delete(request, *args, **kwargs)
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return NewUserSerializer
+        elif self.action == 'partial_update':
+            return UserAvatarSerializer
+        else:
+            return super().get_serializer_class()
 
-
-class UserCreate(generics.ListCreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = NewUserSerializer
-
-    # def post(self, request, *args, **kwargs):
-    #     return self.create(request, *args, **kwargs)
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        # self.perform_create(serializer)
+        user = User(username=serializer.data['username'])
+        user.set_password(serializer.data['password'])
+        user.save()
+        payload = jwt_payload_handler(user)
+        token = jwt_encode_handler(payload)
+        headers = self.get_success_headers(serializer.data)
+        return Response({'username': serializer.data['username'], 'token': token}, status=status.HTTP_201_CREATED,
+                        headers=headers)

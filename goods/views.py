@@ -15,6 +15,7 @@ class GoodListView(generics.ListAPIView):
     pagination_class = GoodPageNumberPagination
     filter_backends = (DjangoFilterBackend,)  # 过滤配置
     filter_class = GoodsFilter
+    authentication_classes = []
 
     def get_queryset(self):
         queryset = Good.objects.all()
@@ -36,3 +37,4 @@ class GoodDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
     queryset = Good.objects.all()
     serializer_class = GoodDetailSerializer
+    authentication_classes = []

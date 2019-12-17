@@ -13,6 +13,7 @@ class Address(models.Model):
     class Meta:
         verbose_name = '地址表'
         verbose_name_plural = verbose_name
+        ordering = ('-is_default',)
 
     def __str__(self):
         return self.name

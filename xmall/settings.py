@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
 
     'rest_framework',
+    'rest_framework.authtoken',
+
     'corsheaders',  # 注册跨域app
     'django_filters',  # 注册过滤器app
     'ckeditor',  # 后台富文本编辑器
@@ -171,12 +173,18 @@ CORS_ALLOW_HEADERS = (
     'Pragma',
 )
 
-# # 分页
-# REST_FRAMEWORK = {
-#     # 默认使用的分页类
-#     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-#     # 默认每页显示多少条数据
-#     'PAGE_SIZE': 20,
-#     'PAGE_QUERY_PARAM': 'page',
-#     'PAGE_SIZE_QUERY_PARAM': 'size',
-# }
+# DRF配置
+REST_FRAMEWORK = {
+    # 默认使用的分页类
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 默认每页显示多少条数据
+    # 'PAGE_SIZE': 20,
+
+    # 配置认证方案
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    )
+}

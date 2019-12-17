@@ -14,7 +14,7 @@ class Good(models.Model):
     category = models.ForeignKey('goods.Category', verbose_name='商品分类', on_delete=models.CASCADE, related_name='goods')
 
     class Meta:
-        verbose_name = '商品表'
+        verbose_name = '商品'
         verbose_name_plural = verbose_name
         ordering = ('-created',)
 
@@ -31,7 +31,7 @@ class GoodImage(models.Model):
     good = models.ForeignKey('goods.Good', verbose_name='商品', on_delete=models.CASCADE, related_name='image')
 
     class Meta:
-        verbose_name = '商品图片表'
+        verbose_name = '商品图片'
         verbose_name_plural = verbose_name
 
     def __str__(self):
@@ -47,7 +47,7 @@ class Category(models.Model):
                                   related_name='category', null=True, blank=True)
 
     class Meta:
-        verbose_name = '商品分类表'
+        verbose_name = '商品分类'
         verbose_name_plural = verbose_name
 
     def __str__(self):
