@@ -29,7 +29,8 @@ urlpatterns = [
     path('api/user/', include(('account.urls', 'account'), namespace='accounts')),
     path('api/goods/', include(('goods.urls', 'goods'), namespace='goods')),
     path('api/home/', include(('home.urls', 'home'), namespace='home')),
-    path('api/address/', include(('address.urls', 'address'), namespace='address'))
+    path('api/address/', include(('address.urls', 'address'), namespace='address')),
+    path('api/cart/', include(('cart.urls', 'cart'), namespace='cart')),
 ]
 
 if settings.DEBUG:
