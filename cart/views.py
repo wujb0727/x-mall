@@ -1,7 +1,6 @@
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from rest_framework import generics
 
 from cart.models import Cart
 from cart.serializers import ListCartSerializer, CartSerializer

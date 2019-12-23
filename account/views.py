@@ -1,5 +1,5 @@
-from django.shortcuts import redirect
-from django.urls import reverse
+from django.contrib.auth.backends import ModelBackend
+from django.db.models import Q
 
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -64,5 +64,27 @@ class UserViewSet(ModelViewSet):
         payload = jwt_payload_handler(user)
         token = jwt_encode_handler(payload)
         headers = self.get_success_headers(serializer.data)
-        return Response({'username': serializer.data['username'], 'token': token}, status=status.HTTP_201_CREATED,
-                        headers=headers)
+        return Response(
+            {
+                'username': serializer.data['username'],
+                'token': token},
+            status=status.HTTP_201_CREATED,
+            headers=headers)
+
+    def retrieve(self, request, *args, **kwargs):
+        username = request.path.split('/')[3]
+        instance = User.objects.get(Q(username=username) | Q(
+            mobile=username) | Q(email=username))
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+
+class CustomBackend(ModelBackend):
+    def authenticate(self, request, username=None, password=None, **kwargs):
+        try:
+            user = User.objects.get(Q(username=username) | Q(
+                mobile=username) | Q(email=username))
+            if user.check_password(password):
+                return user
+        except User.DoesNotExist as e:
+            return None

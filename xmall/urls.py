@@ -30,7 +30,8 @@ urlpatterns = [
     path('api/goods/', include(('goods.urls', 'goods'), namespace='goods')),
     path('api/home/', include(('home.urls', 'home'), namespace='home')),
     path('api/address/', include(('address.urls', 'address'), namespace='address')),
-    path('api/cart/', include(('cart.urls', 'cart'), namespace='cart')),
+    path('api/cart/', include(('cart.urls', 'cart'), namespace='carts')),
+    path('api/order/', include(('order.urls', 'order'), namespace='orders')),
 ]
 
 if settings.DEBUG:

@@ -194,3 +194,14 @@ REST_FRAMEWORK = {
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
 }
+
+# 自定义认证,使用户名,手机号,邮箱都能登录
+AUTHENTICATION_BACKENDS = (
+    'account.views.CustomBackend',
+    'django.contrib.auth.backends.ModelBackend'
+)
+
+import datetime
+
+# 订单过期时间
+ORDER_TIMEOUT = datetime.timedelta(minutes=30)
